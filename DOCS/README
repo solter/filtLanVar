@@ -1,0 +1,15 @@
+This directory is for containing the FILTLAN documentation files using
+doxygen. Goto "../INCLUDE/" and run "doxygen filtlan_doxygen.cfg" and you
+should obtain two directories "./html/" and "./latex/". See the generated
+documentation files therein. Please make sure that your machine has doxygen
+installed.
+
+The FILTLAN header files *.h are in "../INCLUDE/", and they are all
+documented in doxygen style. If the directory is changed, specify it with
+the tag "INPUT" in "../INCLUDE/filtlan_doxygen.cfg".
+
+FILTLAN uses MATKIT for matrix computations. The FILTLAN documentation also
+links to the MATKIT documentation with the tag "TAGFILES".
+
+More information about how to link to external documentation is here:
+http://www.stack.nl/~dimitri/doxygen/external.html

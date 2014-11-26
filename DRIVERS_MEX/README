@@ -1,0 +1,133 @@
+============================================================================
+ What are the files to make and how to make them?
+============================================================================
+
+We assume the files are put or to be put in their default directories. The
+locations may be different if the settings are changed.
+
+This directory contains two source files to generate two MEX files for
+OCTAVE/MATLAB users. The two source files are:
+------
+./filtlan_mex.cpp   (filtered Lanczos algorithm for eigenvalue computations)
+./laneig_mex.cpp    (standard Lanczos algorithm for eigenvalue computations)
+------
+The two MEX files to generate are filtlan.$(MEXEXT) and laneig.$(MEXEXT),
+where $(MEXEXT) is the MEX file name extension defined in "../Make.inc". It
+can be "mex" or "mexa64", depending on your system.
+
+To make the two MEX files, the following two archive files are required:
+------
+../LIB/libdfiltlan_mex.a
+../LIB/libdmatkit_mex.a
+------
+Here the character 'd' stands for double precision.
+
+If the first archive file is missing, go to "../OBJ_MEX/DOUBLE/" and "make".
+If the second archive file is missing, go to "../MATKIT/OBJ_MEX/DOUBLE/" and
+"make". More information can be found in "../OBJ_MEX/README" and
+"../MATKIT/OBJ_MEX/README".
+
+"make" should generate the two MEX files. If any problem occurs, try to
+adjust the settings in the following files:
+------
+../Make.inc                              (for general settings)
+../MATKIT/OBJ_MEX/DOUBLE/Makefile        (for "../LIB/libdmatkit_mex.a")
+../OBJ_MEX/DOUBLE/Makefile               (for "../LIB/libdfiltlan_mex.a")
+./Makefile                               (for the two MEX files)
+------
+In particular, in "../Make.inc" you can choose to compile by the OCTAVE
+compiler mkoctfile (with "MEX_FLAG =") or by the MATLAB compiler mex (with
+"MEX_FLAG = USE_MATLAB"). Be sure that you have OCTAVE or MATLAB installed
+in your machine. To skip the MEX compilation, use "MEX_FLAG = NO_MEX".
+
+Both MEX files are in double-precision floating-point arithmetic. There is no
+MEX file provided for the single-precision computation, since at this point
+both OCTAVE (version 3.2.4) and MATLAB (versions 2010b and 2011a) do not
+have an implementation of sparse matrices of single-precision floating-
+point numbers.
+
+Alternatively, you may also compile the mex files with "make_octave_mex.m"
+for OCTAVE or "make_matlab_mex.m" for MATLAB. The former file is useful to
+make the mex files for OCTAVE in Windows, the version not via Cygwin.
+
+
+============================================================================
+ "laneig" computes eigenvalues by a standard Lanczos procedure
+============================================================================
+
+A manual page can be obtained by executing "laneig" without input arguments
+in OCTAVE/MATLAB console. A brief description is as follows.
+
+The usage of laneig:
+------
+[V, D, info] = laneig(A, nev, part, opts);
+[V, D]       = laneig(A, nev, part, opts);
+    D        = laneig(A, nev, part, opts);
+------
+
+input:
+1. A is a sparse matrix whose eigenvalues are to be sought.
+2. nev is the number of eigenvalues requested (default 6).
+3. part indicates which part of eigenvalues are sought:
+   "SA" - Smallest Algebraic, for the smallest eigenvalues
+   "LA" - Largest Algebraic, for the largest eigenvalues (default)
+   "BE" - Both Ends, one more from high end if nev is odd
+4. opts is a collection of Lanczos options default options will be used if
+   opts is not specified.
+
+output:
+1. V is a dense matrix whose columns are the computed eigenvectors of A.
+2. D is a vector or a sparse diagonal matrix formed by the computed
+   eigenvalues of A.
+3. info gives some information about the computation.
+
+
+============================================================================
+ "filtlan" computes eigenvalues by a filtered Lanczos procedure
+============================================================================
+
+A manual page can be obtained by executing "filtlan" without input arguments
+in OCTAVE/MATLAB console. A brief description is as follows.
+
+The usage of filtlan:
+------
+[V, D, info] = filtlan(A, [a,b], opts);
+[V, D]       = filtlan(A, [a,b], opts);
+    D        = filtlan(A, [a,b], opts);
+[V, D, info] = filtlan(A, [a,b], polydeg, opts);
+[V, D]       = filtlan(A, [a,b], polydeg, opts);
+    D        = filtlan(A, [a,b], polydeg, opts);
+[V, D, info] = filtlan(A, [a,b], polydeg, basedeg, opts);
+[V, D]       = filtlan(A, [a,b], polydeg, basedeg, opts);
+    D        = filtlan(A, [a,b], polydeg, basedeg, opts);
+------
+
+input:
+1. A is a sparse matrix whose eigenvalues are to be sought.
+2. [a,b] is the interval in which the eigenvalues are requested.
+   If a==-inf, the requested eigenvalues are the smallest ones.
+   If b== inf, the requested eigenvalues are the largest ones.
+   If [a,b] is properly inside the spectrum, the requested eigenvalues are
+   interior.
+3. polydeg is the polynomial degree (default 10, which should be increased
+   if the requested eigenvalues are interior especially in a narrow interval
+   relative to to the range of spectrum).
+4. basedeg is the base filter degree (default 10). Degrees from 5 to 15 are
+   usually good.
+5. opts is a collection of filtered Lanczos options; default options will be
+   used if opts is not specified.
+
+output:
+1. V is a dense matrix whose columns are the computed eigenvectors of A.
+2. D is a vector or a sparse diagonal matrix formed by the computed
+   eigenvalues of A.
+3. info gives some information about the computation.
+
+
+============================================================================
+ An m-file for a batch test
+============================================================================
+
+Finally, the m-file "test_mex.m" gives a batch test using the matrix
+"../DATA/laplacian221.mat". The sample OCTAVE and MATLAB diary files are
+also provided as "octave_diary.log" and "matlab_diary.log", respectively.

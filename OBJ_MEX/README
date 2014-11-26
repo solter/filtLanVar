@@ -1,0 +1,45 @@
+We assume the files are put or to be put in their default directories. The
+locations may be different if the settings are changed.
+
+This directory contains two subdirectories, "DOUBLE" and "SINGLE". The name
+"DOUBLE" means with double-precision floating-point arithmetic, and likewise
+the name "SINGLE" means with single-precision floating-point arithmetic.
+
+Go to "./DOUBLE/" and "make", and you should get the four MEX object files:
+------
+./DOUBLE/symtrieig.o     (for eigenvalues of a symmetric tridiagonal matrix)
+./DOUBLE/laneig.o        (for the standard Lanczos algorithm)
+./DOUBLE/polyfilt.o      (for polynomial approximation for filtering)
+./DOUBLE/filtlan.o       (for the filtered Lanczos algorithm)
+------
+The combination of the four files forms the archive file
+"../LIB/libdfiltlan_mex.a", where the character 'd' means double precision.
+
+If any problem occurs, try to adjust the settings in these files:
+------
+../Make.inc              (for general settings)
+./DOUBLE/Makefile        (for the files *.o *.a listed above)
+------
+In particular, in "../Make.inc" you can choose to compile by the OCTAVE
+compiler mkoctfile (with "MEX_FLAG =") or by the MATLAB compiler mex (with
+"MEX_FLAG = USE_MATLAB"). Be sure that you have OCTAVE or MATLAB installed
+in your machine. To skip the MEX compilation, use "MEX_FLAG = NO_MEX".
+
+With "../LIB/libdfiltlan_mex.a" ready, go to "../DRIVERS_MEX/" where there
+is "../DRIVERS_MEX/Makefile", and "make" generates the two MEX drivers with
+double-precision floating-point arithmetic:
+------
+../DRIVERS_MEX/laneig.$(MEXEXT)
+../DRIVERS_MEX/filtlan.$(MEXEXT)
+------
+Here $(MEXEXT) is the MEX file name extension defined in "../Make.inc". See
+"../DRIVERS_MEX/README" for information about the two MEX drivers.
+
+Replacing "DOUBLE" by "SINGLE" in the above procedure, one can obtain the
+object files with single-precision floating-point arithmetic in "./SINGLE/",
+and an archive file "../LIB/libsfiltlan_mex.a" from combining these object
+files, where the character 's' stands for single precision.  However, there
+is no MEX driver provided for the single-precision computation, since at
+this point both OCTAVE (version 3.2.4) and MATLAB (versions 2010b and 2011a)
+do not have an implementation of sparse matrices of single-precision
+floating-point numbers. 

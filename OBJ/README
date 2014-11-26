@@ -1,0 +1,41 @@
+We assume the files are put or to be put in their default directories. The
+locations may be different if the settings are changed.
+
+This directory contains two subdirectories, "DOUBLE" and "SINGLE". The name
+"DOUBLE" means with double-precision floating point arithmetic, and likewise
+the name "SINGLE" means with single-precision floating point arithmetic.
+
+Go to "./DOUBLE/" and "make", and you should get the four object files:
+------
+./DOUBLE/symtrieig.o     (for eigenvalues of a symmetric tridiagonal matrix)
+./DOUBLE/laneig.o        (for the standard Lanczos algorithm)
+./DOUBLE/polyfilt.o      (for polynomial approximation for filtering)
+./DOUBLE/filtlan.o       (for the filtered Lanczos algorithm)
+------
+The combination of the four object files forms the archive file
+"../LIB/libdfiltlan.a", where the character 'd' means double precision.
+
+If any problem occurs, try to adjust the settings in these files:
+------
+../Make.inc              (for general settings)
+./DOUBLE/Makefile        (for the *.o *.a files listed above)
+------
+
+With "../LIB/libdfiltlan.a" ready, go to "../DRIVERS/DOUBLE/" where there is
+"../DRIVERS/DOUBLE/Makefile", and "make" generates the four drivers with
+double-precision floating-point arithmetic:
+------
+../DRIVERS/DOUBLE/laneig_driver   (for eigenvalue computations by filtlan)
+../DRIVERS/DOUBLE/filtlan_driver  (for eigenvalue computations by laneig)
+../DRIVERS/DOUBLE/polyfilt_driver (for estimating the number of eigenvalues)
+../DRIVERS/DOUBLE/numeig_driver   (for plotting data of a polynomial filter)
+------
+See "../DRIVERS/README" for more information.
+
+Replacing "DOUBLE" by "SINGLE" in the above procedure, one can obtain the
+files with single-precision floating-point arithmetic. The object files are
+in "./SINGLE/", the archive file is "../LIB/libsfiltlan.a", and there are
+four corresponding drivers in "../DRIVERS/SINGLE/".
+
+Two shell scripts for batch tests are provided in "../TESTS/". See
+"../TESTS/README" for more information.

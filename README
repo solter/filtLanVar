@@ -1,0 +1,136 @@
+============================================================================
+FILTLAN: filtered Lanczos methods for standard symmetric eigenvalue problems
+============================================================================
+
+FILTLAN is a software library written in C/C++ for computing extreme or
+interior eigenvalues of a symmetric matrix by a polynomial filtered Lanczos
+procedure. The code for extreme eigenvalues by a standard Lanczos procedure
+without restarting is also included. In both cases, partial
+reorthogonalization is provided to improve efficiency.
+
+FILTLAN uses MATKIT for the basic matrix computations and LAPACK for the
+routine dstev_() or sstev_() for computing eigenvalues of a symmetric
+tridiagonal matrix.
+
+FILTLAN does not handle generalized or other non-standard eigenvalue
+problems.
+
+
+============================================================================
+ How to install?
+============================================================================
+
+In the following description, we assume the files are put in their default
+directories. In particular, the file "Make.inc", included by all makefiles,
+is assumed in "./". The locations may be different if the settings are
+changed.
+
+The first two files to look at are "./Make.inc" and "./Makefile". Hopefully
+the "Make.inc" is the only file required to change to compile all.
+
+"./Makefile" gives a list of directories where to "make". If all settings
+are appropriate, then "make" will compile everything.
+
+The MATKIT library is put in "./MATKIT/", where "./MATKIT/README" gives a
+description of MATKIT and how to install it. We need the MATKIT archive
+files "./LIB/libdmatkit.a" and "./LIB/libsmatkit.a" for drivers with double-
+precision and single-precision arithmetic, respectively.
+
+LAPACK is required, only for the two routines for computing the eigenvalues
+of a symmetric tridiagonal matrix: dstev_() and sstev_(), with double-
+precision and single-precision arithmetic, respectively. If LAPACK is not
+properly loaded, check $(LOADFLAG) in "./Make.inc".
+
+After successful compilation, there will be two FILTLAN archive files:
+------
+./LIB/libdfiltlan.a        (with double-precision floating-point arithmetic)
+./LIB/libsfiltlan.a        (with single-precision floating-point arithmetic)
+------
+They are combinations of the object files in "./OBJ/DOUBLE/" and those in
+"./OBJ/SINGLE/", respectively. These files are obtained by "make" in
+"./OBJ/DOUBLE/" and "./OBJ/SINGLE/".
+
+There will also be four drivers with double-precision floating-point
+arithmetic:
+------
+./DRIVERS/DOUBLE/laneig_driver    (for eigenvalue computations by laneig)
+./DRIVERS/DOUBLE/filtlan_driver   (for eigenvalue computations by filtlan)
+./DRIVERS/DOUBLE/numeig_driver    (for estimating the number of eigenvalues)
+./DRIVERS/DOUBLE/polyfilt_driver  (for plotting data of a polynomial filter)
+------
+The corresponding drivers in single-precision floating-point arithmetic are
+in "./DRIVERS/SINGLE/". These drivers are obtained by "make" in
+"./DRIVERS/DOUBLE/" and "./DRIVERS/SINGLE/". See "./DRIVERS/README" for more
+information.
+
+There are two shell scripts for batch tests in "./TEST/".
+------
+./TESTS/test_laplacian221.sh               (in double-precision computation)
+./TESTS/test_laplacian221_single.sh        (in single-precision computation)
+------
+The two scripts invoke the drivers mentioned above. See "./TESTS/README"
+for more information.
+
+
+============================================================================
+ MEX support for OCTAVE/MATLAB users
+============================================================================
+
+Two MEX files can be generated and used as OCTAVE/MATLAB commands "laneig"
+and "filtlan".
+
+In "../Make.inc", use the compiler flag "MEX_FLAG =" for OCTAVE, or the flag
+"MEX_FLAG = USE_MATLAB" for MATLAB.
+
+The MATKIT MEX archive file "./LIB/libdmatkit_mex.a" is required. If it is
+not there, see "./MATKIT/README" for how to make it.
+
+After successful compilation, there will be two FILTLAN MEX archive files:
+------
+./LIB/libdfiltlan_mex.a    (with double-precision floating-point arithmetic)
+./LIB/libsfiltlan_mex.a    (with single-precision floating-point arithmetic)
+------
+They are combinations of the MEX object files in "./OBJ_MEX/DOUBLE/" and
+"./OBJ_MEX/SINGLE/", respectively. These files are obtained by "make" in
+"./OBJ_MEX/DOUBLE/" and "./OBJ_MEX/SINGLE/". Note that only
+"./LIB/libdfiltlan_mex.a" is required for generating the final MEX files.
+
+The two final MEX files are:
+------
+./DRIVERS_MEX/laneig.$(MEXEXT)
+./DRIVERS_MEX/filtlan.$(MEXEXT)
+------
+Here $(MEXEXT) is the MEX is the MEX file name extension defined in
+"./Make.inc". It can be "mex" or "mexa64", depending on your system.
+The two MEX files are obtained by "make" in "./DRIVERS_MEX/". Both MEX files
+use double-precision floating-point arithmetic and no MEX file provided for
+the single-precision computation. See "./DRIVERS_MEX/README" for more
+information.
+
+To exclude the MEX compilation, use "MEX_FLAG = NO_MEX" in "./Make.inc".
+
+
+============================================================================
+ Documentation using doxygen
+============================================================================
+
+All the header files *.h in "./INCLUDE/" are documented with comments in
+doxygen style. In a machine with doxygen installed, go to "./INCLUDE/" and
+run "doxygen filtlan_doxygen.cfg". Then the MATKIT documents will be
+generated in "./DOCS/". The HTML web pages are in "./DOCS/html/", and the
+LATEX files are in "./DOCS/latex/".
+
+
+============================================================================
+ Questions?
+============================================================================
+
+Your feedback is very welcome! Questions, comments, and complaints, please
+send us email to {hrfang, saad} (at) cs dot umn dot edu.
+
+A technical report desribing the techniques used in the package can be
+found here: 
+
+"A Filtered Lanczos Procedure for Extreme and Interior Eigenvalue Problems",
+Haw-ren Fang and Yousef Saad, University of Minnesota Technical Report 2011.
+http://www-users.cs.umn.edu/~saad/PDF/umsi-2011-xx.pdf

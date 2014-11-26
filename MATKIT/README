@@ -1,0 +1,114 @@
+============================================================================
+MATKIT: a C++ software library for basic matrix computations
+============================================================================
+
+This directory contains a stand-alone library MATKIT written in C++ for
+basic matrix computations. Currently it supports FILTLAN, a library using
+the filtered Lanczos algorithms for standard symmetric eigenvalue problems.
+
+
+============================================================================
+ How to install?
+============================================================================
+
+In the following description, we assume the files are put in their default
+directories. In particular, the file "Make.inc", included by all makefiles,
+is assumed in "../". The locations may be different if the settings are
+changed.
+
+The first two files to look at are "../Make.inc" and "./Makefile". Hopefully
+the "Make.inc" is the only file required to change to compile all.
+
+"./Makefile" gives a list of directories where to "make". If all settings
+are appropriate, then "make" will compile the whole MATKIT package.
+
+MATKIT can be used without classes. More precisely, a set of routines are
+declared in "./INCLUDE/matkitfunc.h" with an implementation in
+"./SRC/matkitfunc.cpp". In addition, four classes are provided, namely
+Vector, Matrix, SymmetricMatrix, and SparseMatrix, as well as the arithmetic
+operators and functions of them.
+
+To improve the computational efficiency, the BLAS library can be optionally
+invoked with the compiler option "-DUSE_BLAS". This can be set by including
+"-DUSE_BLAS" in $(CFLAG) in "../Make.inc", where $(LOADFLAG) should also
+load the BLAS library (e.g. "-lblas") for linking files for executable
+drivers. This feature is particularly useful for multi-core parallelism if
+Intel MKL BLAS is readily available. On the other hand, MATKIT has the
+implementation of all routines and can be independent of BLAS, i.e. code
+compiled without "-DUSE_BLAS".
+
+By default, the numbers (i.e. entries in a vector or a matrix) are "double",
+(i.e. in double-precision floating-point format). However, with the compiler
+option "-DUSE_SINGLE" (e.g. included in $(CFLAG) in "../Make.inc"), the
+single-precision floating-point numbers are used. By doing so one can
+compromise the accuracy for the savings in CPU time and memory space.
+
+After successful compilation, there will be two MATKIT archive files:
+------
+../LIB/libdmatkit.a        (with double-precision floating-point arithmetic)
+../LIB/libsmatkit.a        (with single-precision floating-point arithmetic)
+------
+They are combinations of the object files in "./OBJ/DOUBLE/" and those in
+"./OBJ/SINGLE/", respectively. These files are obtained by "make" in
+"./OBJ/DOUBLE/" and "./OBJ/SINGLE/".
+
+There will also be four test drivers:
+------
+./TESTS/test_matkit        (with double-precision floating-point arithmetic)
+./TESTS/test_matkit_efficiency
+./TESTS/test_matkit_single (with single-precision floating-point arithmetic)
+./TESTS/test_matkit_efficiency_single
+------
+The four drivers are obtained by "make" in "./TESTS/".
+
+To get a quick overview of how to use MATKIT, trace the source code
+"./TESTS/test_matkit.cpp" and run "./TESTS/test_matkit" or
+"./TESTS/test_matkit_single", where "single" means single-precision
+floating-point data. The code "./TESTS/test_matkit_efficiency.cpp",
+which generates "./TESTS/test_matkit_efficiency" and
+"./TESTS/test_matkit_efficiency_single", is for testing the efficiency of
+some routines.
+
+
+============================================================================
+ MEX support for OCTAVE/MATLAB users
+============================================================================
+
+MATKIT can be used for MEX code with the compiler flag "MEX_FLAG =" for
+OCTAVE or the flag "MEX_FLAG = USE_MATLAB" for MATLAB. The flag is included
+in "../Make.inc". A successful compilation will generate two MEX archive
+files:
+------
+../LIB/libdmatkit_mex.a    (with double-precision floating-point arithmetic)
+../LIB/libsmatkit_mex.a    (with single-precision floating-point arithmetic)
+------
+They are combinations of the MEX object files in "./OBJ_MEX/DOUBLE/" and
+"./OBJ_MEX/SINGLE/", respectively. These files are obtained by "make" in
+"./OBJ_MEX/DOUBLE/" and "./OBJ_MEX/SINGLE/".
+
+To exclude the MEX compilation, use "MEX_FLAG = NO_MEX" in "../Make.inc".
+
+
+============================================================================
+ Documentation using doxygen
+============================================================================
+
+All the header files *.h in "./INCLUDE/" are documented with comments in
+doxygen style. In a machine with doxygen installed, go to "./INCLUDE/" and
+run "doxygen matkit_doxygen.cfg". Then the MATKIT documents will be
+generated in "./DOCS/". The HTML web pages are in "./DOCS/html/", and the
+LATEX files are in "./DOCS/latex/".
+
+
+============================================================================
+ Known issue
+============================================================================
+
+There are one known issue, which is related to MEX support.
+
+The default memory management uses the C++ operators new and delete,
+which should be replaced by mxMalloc() and mxFree() in MEX. Otherwise,
+memory leaks are expected when the function mexErrMsgTxt() is called. A nice
+way to address this problem is to override the operators new and delete.
+However, the provided overridden operators new and delete do not work well.
+They are excluded from the makefiles enclosed.

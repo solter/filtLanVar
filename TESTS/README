@@ -1,0 +1,15 @@
+"test_laplacian221.sh" is a shell script for a batch test in double
+precision computation. Use "sh test_laplacian221.sh" to run the test.
+------
+1. The drivers invoked are in the directory "../DRIVERS/DOUBLE/".
+2. The matrix whose eigenvalues are sought is "../DATA/laplacian221.mtx".
+3. The output files are in the directory "./LOG/".
+------
+
+"test_laplacian221_single.sh" is a shell script for a batch test in single
+precision computation. Use "sh test_laplacian221_single.sh" to run the test.
+------
+1. The drivers invoked are in the directory "../DRIVERS/SINGLE/".
+2. The matrix whose eigenvalues are sought is "../DATA/laplacian221.mtx".
+3. The output files are in the directory "./LOG_SINGLE/".
+------

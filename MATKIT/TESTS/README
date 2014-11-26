@@ -1,0 +1,7 @@
+"make" compiles the source file "test_matkit.cpp" and generates the two
+test drivers:
+------
+./test_matkit                        (in double-precision computation)
+./test_matkit_single                 (in single-precision computation)
+------
+The two drivers resembles the operations in the m-file "./test_matkit.m".

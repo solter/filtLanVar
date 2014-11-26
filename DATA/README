@@ -1,0 +1,12 @@
+MATKIT reads and writes sparse matrices in Matrix-Market format. The
+following two files can be used to convert a sparse matrix in OCTAVE/MATLAB
+(e.g. loaded from a mat-file) to a Matrix-Market file and vice versa.
+------
+http://math.nist.gov/MatrixMarket/mmio/matlab/mmread.m
+http://math.nist.gov/MatrixMarket/mmio/matlab/mmwrite.m
+------
+
+This page gives more information:
+------
+http://math.nist.gov/MatrixMarket/mmio/matlab/mmiomatlab.html
+------

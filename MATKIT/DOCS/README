@@ -1,0 +1,17 @@
+This directory is for containing the MATKIT documentation files using
+doxygen. Go to "../INCLUDE/" and run "doxygen matkit_doxygen.cfg" and you
+should obtain two directories "./html/" and "./latex/". See the generated
+documentation files therein. Please make sure that your machine has doxygen
+installed.
+
+The MATKIT header files *.h are in "../INCLUDE/", and they are all
+documented in doxygen style. If the directory is changed, specify it with   
+the tag "INPUT" in "../INCLUDE/matkit_doxygen.cfg".
+
+A MATKIT tag file "matkit_doxygen.tag" is also generated. It is specified
+with the tag "GENERATE_TAGFILE" in "../INCLUDE/matkit_doxygen.cfg". This tag
+file "../INCLUDE/matkit_doxygen.tag" can be used for other project
+documentations to link to the MATKIT documentation.
+
+More information about how to link to external documentation is here:
+http://www.stack.nl/~dimitri/doxygen/external.html

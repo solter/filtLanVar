@@ -1,0 +1,56 @@
+============================================================================
+ A brief description
+============================================================================
+
+This directory contains the source files for the two drivers for extreme
+eigenvalues of a symmetric matrix:
+------
+arpack_driver    (ARPACK implementation of implicitly restarted Lanczos)
+silaneig_driver  (shift-and-invert Lanczos w/ partial reorthogonalization)
+------
+Both drivers work just with double-precision floating point arithmetic. The
+code can be adapted for single-precision floating point arithmetic.
+
+
+============================================================================
+ The ARPACK driver
+============================================================================
+
+The source files contained in this directory for "arpack_driver" are
+"arpack.h", "arpack.cpp", and "arpack_driver.cpp".
+
+To make "arpack_driver", you also need the MATKIT and ARPACK archive files:
+1. It is assumed that the MATKIT archive file is "../LIB/libdfiltlan.a",
+   which can be obtained by going to "../OBJ/DOUBLE/" and "make". If any
+   problem occurs, see "../OBJ/README" for more information.
+2. With your ARPACK archive ready, set "ARPACK_LIB" in "./Make.inc".
+
+The LAPACK package is also required. Check "../Make.inc" to see whether it
+is properly set.
+
+With all ready, "make arpack_driver" will obtain the executable file
+"arpack_driver", and run "./arpack_driver" without parameters for a manual
+page of this driver.
+
+
+============================================================================
+ The shift-and-invert Lanczos driver
+============================================================================
+
+The source files contained in this directory for "silaneig_driver" are
+"silaneig.h", "silaneig.cpp", and "silaneig_driver.cpp".
+
+To make "silaneig_driver", you also need
+1. The MATKIT archive file "../LIB/libdfiltlan.a", which can be obtained in
+   the way described above.
+2. You also need UMFPACK for sparse LU. The UMFPACK requires the AMD and
+   UFconfig libraries. It is recommended to also have the CHOLMOD, CAMD,
+   CCOLAMD, COLAMD, and metis-4.0 libraries. Set the parameters in the
+   UMFPACK section in "./Make.inc"
+
+The LAPACK package is also required. Check "../Make.inc" to see whether it
+is properly set.
+
+With all ready, "make silaneig_driver" will obtain the executable file
+"silaneig_driver", and run "./silaneig_driver" without parameters for a
+manual page of this driver.

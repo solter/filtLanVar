@@ -1,0 +1,33 @@
+We assume the files are put or to be put in their default directories. The
+locations may be different if the settings are changed.
+
+This directory contains two subdirectories, "DOUBLE" and "SINGLE". The name
+"DOUBLE" means with double-precision floating point arithmetic, and likewise
+the name "SINGLE" means with single-precision floating point arithmetic.
+
+Go to "./DOUBLE/" and "make", and you should get the six object files:
+------
+./DOUBLE/matkitfunc.o            (for routines without classes)
+./DOUBLE/basics.o                (for class Basics)
+./DOUBLE/vector.o                (for class Vector)
+./DOUBLE/matrix.o                (for class Matrix)
+./DOUBLE/symmatrix.o             (for class SymmetricMatrix)
+./DOUBLE/spmatrix.o              (for class SparseMatrix)
+------
+The combination of the six object files forms the archive file
+"../../LIB/libdmatkit.a", where the character 'd' means double precision.
+
+If any problem occurs, try to adjust the settings in these files:
+------
+../../Make.inc                   (for general settings)
+./DOUBLE/Makefile                (for the *.o *.a files listed above)
+------
+
+Replacing "DOUBLE" by "SINGLE" in the above procedure, one can obtain the  
+files with single-precision floating-point arithmetic. The object files are
+in "./SINGLE/", forming the archive file "../../LIB/libsmatkit.a", in which
+the character 's' stands for single precision.
+
+Finally, the directory "../TESTS/" contains a test driver which requires
+"../../LIB/libdmatkit.a" or "../../LIB/libsmatkit.a" to make. See
+"../TESTS/README" for more information.

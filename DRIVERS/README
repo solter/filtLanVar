@@ -1,0 +1,77 @@
+============================================================================
+ What are the drivers to make and how to make them?
+============================================================================
+
+We assume the files are put or to be put in their default directories. The
+locations may be different if the settings are changed.
+
+This directory contains the following C++ files:
+------
+./laneig_driver.cpp               (for eigenvalue computations by filtlan)
+./filtlan_driver.cpp              (for eigenvalue computations by laneig)
+./numeig_driver.cpp               (for estimating the number of eigenvalues)
+./polyfilt_driver.cpp             (for plotting data of a polynomial filter)
+------
+They are source files used to generate the drivers with the same names
+without the extension ".cpp".
+
+To make the drivers in double-precision floating-point arithmetic, go to 
+"./DOUBLE/" and "make", and the drivers are generated in "./DOUBLE/". The
+following two archive files are required:
+------
+../LIB/libdmatkit.a
+../LIB/libdfiltlan.a
+------
+Here the character 'd' stands for double precision.
+
+If the first archive file is missing, go to "../OBJ/DOUBLE/" and "make".
+If the second archive file is missing, go to "../MATKIT/OBJ/DOUBLE/" and
+"make". More information can be found in "../OBJ/README" and
+"../MATKIT/OBJ/README".
+
+If any problem occurs, try to adjust the following files:
+------
+../Make.inc                       (for general settings)
+../MATKIT/OBJ/DOUBLE/Makefile     (for "../LIB/libdmatkit.a")
+../OBJ/DOUBLE/Makefile            (for "../LIB/libdfiltlan.a")
+./DOUBLE/Makefile                 (for the four drivers)
+------
+
+If "make" in "./DOUBLE/" is successful, the four drivers are generated:
+------
+./DOUBLE/laneig_driver            (for eigenvalue computations by filtlan)
+./DOUBLE/filtlan_driver           (for eigenvalue computations by laneig)
+./DOUBLE/numeig_driver            (for estimating the number of eigenvalues)
+./DOUBLE/polyfilt_driver          (for plotting data of a polynomial filter)
+------
+
+Replacing "DOUBLE" by "SINGLE" in the above procedure, the corresponding
+drivers in single-precision floating-point arithmetic are generated in
+"./SINGLE/".
+
+
+============================================================================
+ More about the drivers
+============================================================================
+
+Executing each driver, e.g. "filtlan_driver", without input arguments gives
+a manual page.
+
+The driver "laneig_driver" computes extreme eigenvalues of a (sparse)
+symmetric matrix by a standard Lanczos procedure without restarting.
+
+The driver "filtlan_driver" computes extreme or interior eigenvalues of a
+(sparse) symmetric matrix by a polynomial filtered Lanczos procedure.
+
+The driver "numeig_driver" estimates the number of eigenvalues in a given
+interval. A (tight) window which covers all eigenvalues is required to
+determine the filter. If the window is not provided, the Lanczos algorithm
+will be used to compute one.
+
+The driver "polyfilt_driver" can be used to preview a polynomial filter, for
+example, with GNUPLOT. This is the only driver not requiring LAPACK, since
+it does not need to compute eigenvalues of a symmetric tridiagonal matrix.
+
+Finally, there are two shell scripts for batch tests in "../TEST/". See
+
+"../TESTS/README" therein.

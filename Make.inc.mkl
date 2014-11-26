@@ -1,0 +1,61 @@
+#-----------------------------------------------------------------------------
+# compilers
+#-----------------------------------------------------------------------------
+
+CC = icc
+CPP = icpc
+
+# for OCTAVE mkoctave compilation, use "MEX_FLAG ="
+# for MATLAB mex compilation, use "MEX_FLAG = USE_MATLAB"
+# for no mex compliation, use "MEX_FLAG = NO_MEX"
+#MEX_FLAG =
+#MEX_FLAG = USE_MATLAB
+MEX_FLAG = NO_MEX
+
+ifeq ($(MEX_FLAG),USE_MATLAB)
+    # for MATLAB
+    MATLABROOT = /soft/matlab2010b
+    MEX = $(MATLABROOT)/bin/mex
+else
+    # for OCTAVE
+    MEX = mkoctfile
+endif
+
+
+#-----------------------------------------------------------------------------
+# flags for compilers
+#-----------------------------------------------------------------------------
+
+CFLAGS = -O3 -Wall -DUSE_NAMESPACE -DUSE_BLAS -DUSE_SPBLAS
+#LOADFLAGS = -llapack -lblas
+## the following line is for "link" in itasca.msi.umn.edu, assuming "-DUSE_BLAS" and/or "-DUSE_SPBLAS" is set in $(CFLAGS)
+# sequential
+#LOADFLAGS = -L/soft/intel/mkl/10.2.1.017/lib/em64t -lmkl_lapack -lmkl_intel_lp64 -lmkl_sequential -lmkl_core
+# multi-core threading
+LOADFLAGS = -L/soft/intel/mkl/10.2.1.017/lib/em64t  -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lguide -lpthread -lm
+#LOADFLAGS = -L/soft/intel/mkl/10.2.1.017/lib/em64t  -lmkl_intel_lp64 -lmkl_gnu_thread -lmkl_core -liomp5 -lpthread -lm
+
+ifeq ($(MEX_FLAG),USE_MATLAB)
+    # flags for the MATLAB compiler mex
+    # "-largeArrayDims" is required for 64-bit OS machines
+    MEXCFLAGS =    -cxx -O -largeArrayDims -DUSE_MEX -DUSE_MWBLAS -DUSE_MWLAPACK
+    MEXLOADFLAGS = -cxx -llapack -lblas
+    # MEXEXT is the extension of compiled mex-files
+    # it is also the output of $(MATLABROOT)/bin/mexext, and also the output of "mex" in MATLAB console
+    MEXEXT = mexa64
+else
+    # flags for the OCTAVE compiler mkoctfile
+    MEXCFLAGS =    -DUSE_MEX -DUSE_BLAS
+    MEXLOADFLAGS = -llapack -lblas
+    # MEXEXT is the extension of compiled mex-files
+    # it is also the output "mexext" in OCTAVE console
+    MEXEXT = mex
+endif
+
+
+#-----------------------------------------------------------------------------
+# archive command
+#-----------------------------------------------------------------------------
+
+AR = ar
+ARFLAGS = cr
