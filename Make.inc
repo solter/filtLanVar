@@ -5,12 +5,21 @@
 CC = gcc
 CPP = g++
 
+##These are the lapack and blas library locations.
+##on home system
+#LAPACK = -llapack
+#BLAS = -lblas
+##on school computers
+
+LAPACK = -lgfortran -L/home/grad00/solfest/csSyphax/solfest/Documents/progs/libs/lapack-3.5.0 -llapack
+BLAS = -lrefblas  
+
 # for OCTAVE mkoctave compilation, use "MEX_FLAG = FOR_OCTAVE"
 # for MATLAB mex compilation, use "MEX_FLAG = FOR_MATLAB"
 # for no mex compliation, use "MEX_FLAG ="
-MEX_FLAG = FOR_OCTAVE
+#MEX_FLAG = FOR_OCTAVE
 #MEX_FLAG = FOR_MATLAB
-#MEX_FLAG =
+MEX_FLAG =
 
 ifeq ($(MEX_FLAG),FOR_MATLAB)
     # for MATLAB
@@ -28,7 +37,7 @@ endif
 
 #CFLAGS = -g -O0 -Wall -DUSE_NAMESPACE -DUSE_BLAS
 CFLAGS = -g -O0 -Wall -DUSE_NAMESPACE
-LOADFLAGS = -llapack -lblas
+LOADFLAGS = $(LAPACK) $(BLAS)
 ## the following line is for "link" in itasca.msi.umn.edu, assuming "-DUSE_BLAS" and/or "-DUSE_SPBLAS" is set in $(CFLAGS)
 # sequential
 #LOADFLAGS = -L/soft/intel/mkl/10.2.1.017/lib/em64t -lmkl_lapack -lmkl_intel_lp64 -lmkl_sequential -lmkl_core
@@ -40,7 +49,7 @@ ifeq ($(MEX_FLAG),FOR_OCTAVE)
     # flags for the OCTAVE compiler mkoctfile
     MEXCFLAGS =    -g -DUSE_MEX -DUSE_BLAS
     # MEXCFLAGS =    -DUSE_MEX -DUSE_BLAS
-    MEXLOADFLAGS = -llapack -lblas
+    MEXLOADFLAGS = $(LAPACK) $(BLAS)
     # MEXEXT is the extension of compiled mex-files
     # it is also the output "mexext" in OCTAVE console
     MEXEXT = mex
@@ -50,7 +59,7 @@ else ifeq ($(MEX_FLAG),FOR_MATLAB)
     #MEXCFLAGS =    -cxx -g -largeArrayDims -DUSE_MEX -DUSE_MWBLAS -DUSE_MWLAPACK
 MEXCFLAGS =    -cxx -g -largeArrayDims -DUSE_MEX -DUSE_MWLAPACK
     # MEXCFLAGS =    -cxx -O -largeArrayDims -DUSE_MEX -DUSE_MWBLAS -DUSE_MWLAPACK
-    MEXLOADFLAGS = -cxx -llapack -lblas
+    MEXLOADFLAGS = -cxx $(LAPACK) $(BLAS)
     # MEXEXT is the extension of compiled mex-files
     # it is also the output of $(MATLABROOT)/bin/mexext, and also the output of "mex" in MATLAB console
     MEXEXT = mexa64
